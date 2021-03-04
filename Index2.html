@@ -17,6 +17,12 @@ US Mobile Homes choropleth map
               .attr("width", width)
               .attr("height", height)
               .style("border", "1px solid");
+    
+    d3.json("us-states.txt", function(mapData) {
+              d3.csv("MobileHomes.csv",function(data) {
+              });
+    });
+    
   </script>
 </body>
 </html>
