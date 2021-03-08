@@ -18,8 +18,34 @@ US Mobile Homes choropleth map
               .attr("height", height)
               .style("border", "1px solid");
     
+      // Map projection
+    var projection = d3.geoAlbersUsa()
+      // move the center of the map to the center of our canvas
+      .translate([width / 2, height / 2])
+      // scale things down so see entire US
+      .scale([1000]);
+    
+      // Define path generator
+      // path generator that will convert GeoJSON to SVG paths
+    var path = d3.geoPath()
+      // tell path generator to use the previous map projection
+    .projection(projection);
+    
     d3.json("https://bolty1992.github.io/D3/us-states.txt", function(mapData){
-              d3.csv("https://bolty1992.github.io/D3/MobileHomes.csv",function(data) {
+      
+     var states = svg.selectAll("path")
+      // bind the geographic data to svg elements
+      .data(mapData.features)
+      // create one "path" svg element for each datum
+      .enter().append("path")
+      // using the map projection to convert geographic information to screen coordinates
+      .attr("d", path)
+      // change the style properties for the svg
+      .style("stroke", "black") 
+      .style("stroke-width", "1")
+      .style("fill", "white");
+      
+      d3.csv("https://bolty1992.github.io/D3/MobileHomes.csv",function(data) {
               });
           });
     
