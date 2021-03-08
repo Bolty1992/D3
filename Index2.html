@@ -46,9 +46,31 @@ US Mobile Homes choropleth map
       .style("fill", "white");
       
       d3.csv("https://bolty1992.github.io/D3/MobileHomes.csv",function(data) {
-              });
-          });
-    
-  </script>
+        var country2value = {};
+        var minValue = Infinity;
+        var maxValue = -1;
+        data.forEach(function(d){
+          var thisValue = d["MobileHomes"];
+              country2value[d["States"]] = thisValue;
+          
+              minValue = Math.min(minValue, thisValue);
+              maxValue = Math.max(maxValue, thisValue);
+        });
+        
+        var value2range = d3.scaleLinear()
+        .domain([minValue, maxValue])
+        .range
+        ([0, 1])
+        
+        var range2color = d3.interpolateBlues;
+        
+        states.style("fill", function(d){
+          return range2color(
+            value2range(country2value[d.properties.name])
+        );
+      });
+    });
+  });
+</script>
 </body>
 </html>
